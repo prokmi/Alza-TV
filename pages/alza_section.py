@@ -32,6 +32,7 @@ class AlzaSection(Page):
         )
 
     def get_products_on_page(self) -> list:
+        self.logger.debug("Getting products no the page..")
         elements = self.driver.find_elements(*LocatorsAlzaSection.PRODUCT_CONTAINER)
         products = []
         unique_names = []
@@ -42,22 +43,21 @@ class AlzaSection(Page):
                        "price": int(element.find_element(*LocatorsAlzaSection.PRODUCT_PRICE).text.replace(",-", "").replace(" ", "")),
                        "buy_btn": element.find_element(*LocatorsAlzaSection.PRODUCT_BUY)}
             # only append when the elm doesnt exist:
-            print(product["name"], product["price"])
             if product["name"] not in unique_names:
                 # easier than parsing dict in lists
                 products.append(product)
                 unique_names.append(product["name"])
+        self.logger.debug(f"Following products found: {unique_names}")
         return products
 
     def add_product(self, product):
-        self.logger.info(f"Adding product {product['name']} to cart..")
+        self.logger.debug(f"Adding product {product['name']} to cart..")
         product["buy_btn"].click()
         self.wait_until(
-            lambda x: self.driver.find_element(*LocatorsAlzaCart.BACK_BUTTON).is_displayed(),  # TODO use EC
+            lambda x:  self.driver.find_element(*LocatorsAlzaCart.BACK_BUTTON).is_displayed(),
             10,
             "Back button wasn't loaded in time"
         )
-        self.logger.info("Product successfully added")
         self.driver.find_element(*LocatorsAlzaCart.BACK_BUTTON).click()
         self.wait_for()
 
@@ -70,7 +70,8 @@ class AlzaSection(Page):
         products.sort(reverse=True, key=price_sort)
         return products
 
-    def add_most_expensive_products(self, number):
+    def add_most_expensive_products(self, number) -> list:
+
         added = []
 
         while len(added) < number:
@@ -80,3 +81,4 @@ class AlzaSection(Page):
                     self.add_product(product)
                     added.append(product["name"])
                     break
+        return added

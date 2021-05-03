@@ -1,6 +1,7 @@
 
 from selenium.webdriver.chrome.webdriver import WebDriver
 
+from pages.alza_cart import AlzaCart
 from pages.alza_sections.monitors_section import MonitorsSection
 from pages.locators.alza_main_page import LocatorsAlzaMainPage
 from pages.page import Page
@@ -24,3 +25,9 @@ class AlzaMainPage(Page):
 
         self.driver.find_element(*selected_section[0]).click()
         return selected_section[1](driver_instance=self.driver)
+
+    def open_cart(self):
+        self.driver.find_element(*LocatorsAlzaMainPage.CART_BUTTON).click()
+        cart = AlzaCart(self.driver)
+        cart.wait_for()
+        return cart

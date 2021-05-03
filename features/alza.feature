@@ -7,6 +7,5 @@ Feature: Alza.cz
     When I open monitors section
     Then I sort the section by most expensive
     When I add 2 of most expensive products
-    #And I navigate to cart
-    #Then I can see 2 products in the cart
-    When I wait 10 seconds
+    And I open the shopping cart
+    Then I can see correct products in the cart
