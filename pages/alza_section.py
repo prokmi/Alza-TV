@@ -30,10 +30,13 @@ class AlzaSection(Page):
         ActionChains(self.driver).move_to_element(category_elm).perform()  # scroll back
         # wait until the loader disappears and the tab is active
         self.wait_until(
-            lambda x: not self.driver.find_element(*LocatorsAlzaSection.LOADER).is_displayed()
-            and "ui-tabs-active" in category_elm.find_element_by_xpath("..").get_attribute("class"),
+            lambda x: not self.driver.find_element(
+                *LocatorsAlzaSection.LOADER
+            ).is_displayed()
+            and "ui-tabs-active"
+            in category_elm.find_element_by_xpath("..").get_attribute("class"),
             10,
-            "Category wasn't switched in time"
+            "Category wasn't switched in time",
         )
 
     def get_products_on_page(self) -> list:
@@ -43,10 +46,16 @@ class AlzaSection(Page):
         unique_names = []
         for element in elements:
             ActionChains(self.driver).move_to_element(element)
-            product = {"elm": element,
-                       "name": element.find_element(*LocatorsAlzaSection.PRODUCT_NAME).text,
-                       "price": int(element.find_element(*LocatorsAlzaSection.PRODUCT_PRICE).text.replace(",-", "").replace(" ", "")),
-                       "buy_btn": element.find_element(*LocatorsAlzaSection.PRODUCT_BUY)}
+            product = {
+                "elm": element,
+                "name": element.find_element(*LocatorsAlzaSection.PRODUCT_NAME).text,
+                "price": int(
+                    element.find_element(*LocatorsAlzaSection.PRODUCT_PRICE)
+                    .text.replace(",-", "")
+                    .replace(" ", "")
+                ),
+                "buy_btn": element.find_element(*LocatorsAlzaSection.PRODUCT_BUY),
+            }
             # only append when the elm doesnt exist:
             if product["name"] not in unique_names:
                 # easier than parsing dict in lists
@@ -59,9 +68,11 @@ class AlzaSection(Page):
         self.logger.debug(f"Adding product {product['name']} to cart..")
         product["buy_btn"].click()
         self.wait_until(
-            lambda x:  self.driver.find_element(*LocatorsAlzaCart.BACK_BUTTON).is_displayed(),
+            lambda x: self.driver.find_element(
+                *LocatorsAlzaCart.BACK_BUTTON
+            ).is_displayed(),
             10,
-            "Back button wasn't loaded in time"
+            "Back button wasn't loaded in time",
         )
         self.driver.find_element(*LocatorsAlzaCart.BACK_BUTTON).click()
         self.wait_for()

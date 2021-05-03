@@ -1,6 +1,10 @@
 import logging
 
-from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException, WebDriverException
+from selenium.common.exceptions import (
+    NoSuchElementException,
+    StaleElementReferenceException,
+    WebDriverException,
+)
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -13,12 +17,19 @@ class Page:
         self.logger = logging.getLogger("page")
         self.content_loc = content_loc
 
-    def wait_until(self, condition, timeout: int = 10, message: str = "Page was not loaded in time"):
-        WebDriverWait(self.driver, timeout=timeout,
-                      ignored_exceptions=[NoSuchElementException,
-                                          StaleElementReferenceException,
-                                          AttributeError,
-                                          WebDriverException]).until(
+    def wait_until(
+        self, condition, timeout: int = 10, message: str = "Page was not loaded in time"
+    ):
+        WebDriverWait(
+            self.driver,
+            timeout=timeout,
+            ignored_exceptions=[
+                NoSuchElementException,
+                StaleElementReferenceException,
+                AttributeError,
+                WebDriverException,
+            ],
+        ).until(
             condition,
             message=message,
         )
@@ -28,7 +39,9 @@ class Page:
         Checks whether the necessary elements are shown on the page.
         :return:
         """
-        raise NotImplementedError(f"Element Check not implemented in {self.__class__} page!")
+        raise NotImplementedError(
+            f"Element Check not implemented in {self.__class__} page!"
+        )
 
     def wait_for(self, timeout: int = 10, message: str = ""):
         """
@@ -42,7 +55,5 @@ class Page:
         self.wait_until(
             lambda x: self.driver.find_element(*self.content_loc).is_displayed(),
             timeout=timeout,
-            message=message
+            message=message,
         )
-
-

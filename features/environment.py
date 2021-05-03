@@ -6,12 +6,14 @@ from definitions import ROOT_DIR
 
 def before_all(context):
     context.logger = logging.getLogger("behave")
-    context.logger.addHandler(logging.StreamHandler()) 
+    context.logger.addHandler(logging.StreamHandler())
 
 
 def before_feature(context, feature):
     context.logger.info(f"- Feature: {feature.name}")
-    context.driver = Chrome(executable_path=os.path.join(ROOT_DIR, "utils", "chromedriver.exe"))
+    context.driver = Chrome(
+        executable_path=os.path.join(ROOT_DIR, "utils", "chromedriver.exe")
+    )
 
 
 def after_feature(context, feature):
@@ -33,4 +35,3 @@ def before_step(context, step):
 
 def after_step(context, step):
     context.logger.info(f"--- Step end: {step.name}")
-

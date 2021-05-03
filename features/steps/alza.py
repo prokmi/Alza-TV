@@ -1,4 +1,3 @@
-
 from behave import *
 from hamcrest import assert_that, is_not, empty, is_
 
@@ -33,17 +32,19 @@ def step_impl(context):
 
 @then("I can see correct products in the cart")
 def step_impl(context):
-    assert_that(context.cart_items, is_not(empty),
-                "Cart items variable is empty!")
+    assert_that(context.cart_items, is_not(empty), "Cart items variable is empty!")
     # alza is an asshole and renames products in cart
     # assert_that(
     #     context.page.get_products_in_cart(), only_contains(context.cart_items),
     #     "Specified items weren't in cart!"
     # )
     # TODO find a better solution
-    products = [expected in actual for expected in context.cart_items for actual in context.page.get_products_in_cart()]
+    products = [
+        expected in actual
+        for expected in context.cart_items
+        for actual in context.page.get_products_in_cart()
+    ]
     products = [product for product in products if product]  # filter out only matches
     assert_that(
-        len(products),
-        is_(len(context.cart_items)),
-        "The items in cart don't match!")
+        len(products), is_(len(context.cart_items)), "The items in cart don't match!"
+    )

@@ -18,11 +18,13 @@ def step_impl(context, page_name):
 
 @then("I check whether every element is on the page")
 def step_impl(context):
-    assert_that(context.page.elm_check(), is_(True),
-                "Some elements are missing on the current page!")
+    assert_that(
+        context.page.elm_check(),
+        is_(True),
+        "Some elements are missing on the current page!",
+    )
 
 
 @when("I wait {seconds} seconds")
 def step_impl(context, seconds):
     time.sleep(int(seconds))
-

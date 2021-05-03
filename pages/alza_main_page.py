@@ -1,4 +1,3 @@
-
 from selenium.webdriver.chrome.webdriver import WebDriver
 
 from pages.alza_cart import AlzaCart
@@ -10,9 +9,11 @@ from pages.page import Page
 class AlzaMainPage(Page):
     url = "https://www.alza.cz/"
 
-    def __init__(self,  driver_instance: WebDriver):
-        super(AlzaMainPage, self).__init__(driver_instance=driver_instance,
-                                           content_loc=LocatorsAlzaMainPage.MAIN_CONTENT)
+    def __init__(self, driver_instance: WebDriver):
+        super(AlzaMainPage, self).__init__(
+            driver_instance=driver_instance,
+            content_loc=LocatorsAlzaMainPage.MAIN_CONTENT,
+        )
         self.menu_sections = {
             "monitors": (LocatorsAlzaMainPage.MENU_MONITORS, MonitorsSection),
             # more can be added
