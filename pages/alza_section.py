@@ -19,6 +19,11 @@ class AlzaSection(Page):
         DISCUSSION = LocatorsAlzaSection.SORT_DISCUSSION
 
     def sort_by(self, category: SortTypes):
+        """
+        Selects the sort type, clicks on the button and waits until it's loaded
+        :param category: SortTypes: selected type of sorting
+        :return:
+        """
         category_elm = self.driver.find_element(*category.value)
         ActionChains(self.driver).move_to_element(category_elm).perform()
         category_elm.click()
